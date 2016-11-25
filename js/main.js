@@ -132,6 +132,10 @@ mads.prototype.linkOpener = function (url) {
 
 	if(typeof url != "undefined" && url !=""){
 
+    if (typeof this.ct != 'undefined' && this.ct != '') {
+      url = this.ct + encodeURIComponent(url);
+    }
+
 		if (typeof mraid !== 'undefined') {
 			mraid.open(url);
 		}else{
@@ -219,7 +223,7 @@ mads.prototype.loadCss = function (href) {
     this.headTag.appendChild(link);
 }
 
-var eniOil = function () {
+var postPil = function () {
     /* pass in object for render callback */
     this.app = new mads({
         'render' : this
@@ -230,31 +234,32 @@ var eniOil = function () {
     this.events();
 }
 
-eniOil.prototype.render = function () {
+postPil.prototype.render = function () {
+    // <input type="text" id="name" placeholder="NAMA" required> \
     this.app.contentTag.innerHTML =
         '<div class="container"> \
             <div id="layer-1" class="layer"> \
-                <img src="' + this.app.path + 'images/Andalan-banner-x.png"/> \
+                <img src="' + this.app.path + 'images/Andalan-banner2x.png"/> \
                 <form id="form" class="form"> \
-                    <input type="number" id="no" placeholder="HP" required> \
+                    <input type="number" id="no" placeholder="NOMOR HP" required> \
                     <div class="last"> \
                         <button id="submit" class="btn">KIRIM</button> \
                     </div> \
                 </form> \
             </div> \
             <div id="layer-2" class="layer"> \
-                <img src="' + this.app.path + 'images/eo-img-03-01.png"/> \
+                <img src="' + this.app.path + 'images/thanyou-andalan.png"/> \
             </div> \
         </div>';
 }
 
-eniOil.prototype.style = function () {
+postPil.prototype.style = function () {
     var css = 'body { margin: 0; } .container { position: relative; width: 320px; height: 480px; overflow: hidden; margin: 0; padding: 0; } ';
     css += '#layer-1 { display: block; }';
     css += '#layer-2 { display: none; } ';
     css += '.layer { width: 320px; height: 480px; position: absolute; top: 0; left: 0;} ';
-    css += '.form { position: absolute; bottom: 52px; left: 0; text-align: center; width: 320px; } .form input { width: 208px; height: 30px; border: 1px solid #9b71b1; outline: none; box-shadow: none; -webkit-appearance: none; -moz-appearance: none;  padding: 0 10px; font-size: 16px; } .form .last { margin-top: 10px; } ';
-    css += '.btn { background: #9b71b1; border: 0; color: #fff; padding: 5px 40px; border-radius: 30px; font-size: 20px; font-weight: bolder; }';
+    css += '.form { position: absolute; bottom: 25px; left: 0; text-align: center; width: 320px; } .form input { width: 208px; height: 30px; border: 1px solid #32a9e0; outline: none; box-shadow: none; -webkit-appearance: none; -moz-appearance: none;  padding: 0 10px; font-size: 16px; } .form .last { margin-top: 10px; } ';
+    css += '.btn { background: #32a9e0; border: 0; color: #fff; padding: 5px 40px; border-radius: 30px; font-size: 20px; font-weight: bolder; }';
 
     head = document.head || document.getElementsByTagName('head')[0],
     style = document.createElement('style');
@@ -269,7 +274,7 @@ eniOil.prototype.style = function () {
     head.appendChild(style);
 }
 
-eniOil.prototype.events = function () {
+postPil.prototype.events = function () {
     var _this = this;
     this.layer1 = document.getElementById('layer-1');
     this.layer2 = document.getElementById('layer-2');
@@ -280,14 +285,19 @@ eniOil.prototype.events = function () {
         e.preventDefault();
 
         var noEl = document.getElementById('no')
-        noEl.style.border = '';
+        // var nameEl = document.getElementById('name')
+        // nameEl.style.border = '1px solid #32a9e0';
+        noEl.style.border = '1px solid #32a9e0';
 
         var no = noEl.value;
+        // var name = nameEl.value;
 
         if (/^\d+$/.test(no) && /\S/.test(no)) {
             // string is not empty and not just whitespace
             //var url = 'https://www.mobileads.com/api/save_lf?contactEmail=dickale@imx.co.id,karima@imx.co.id,adhie@mobileads.com&gotDatas=1&element=[{%22fieldname%22:%22text_1%22,%22value%22:%22' + name + '%22},{%22fieldname%22:%22text_2%22,%22value%22:%22' + hp +  '%22}]&user-id=2901&studio-id=203&tab-id=1&trackid=2066&referredURL=Sample%20Ad%20Unit&callback=leadGenCallback';
             var url = 'http://www.mobileads.com/api/save_lf?contactEmail=dickale@imx.co.id,karima@imx.co.id,adhie@mobileads.com,jeff@mobileads.com&gotDatas=1&element=[{%22fieldname%22:%22text_1%22,%22value%22:%22'+no+'%22}]&user-id=2901&studio-id=226&tab-id=1&trackid=2089&referredURL=Sample%20Ad%20Unit&callback=leadGenCallback'
+            //var url = 'https://www.mobileads.com/api/save_lf?contactEmail=dickale@imx.co.id,karima@imx.co.id,adhie@mobileads.com,jeff@mobileads.com&gotDatas=1&element=[{%22fieldname%22:%22text_1%22,%22value%22:%22'+no+'%22},{%22fieldname%22:%22text_2%22,%22value%22:%22'+name+'%22}]&user-id=2901&studio-id=226&tab-id=1&trackid=2090&referredURL=Sample%20Ad%20Unit&callback=leadGenCallback'
+
             /* tracker */
             _this.app.tracker('E', 'form_submit');
 
@@ -296,13 +306,19 @@ eniOil.prototype.events = function () {
             if (!/\S/.test(no)) {
                 noEl.style.border = '1px solid red';
             }
+
+            // if (!/\S/.test(name)) {
+            //   nameEl.style.border = '1px solid red'
+            // }
         }
     })
 }
 
-eniOil.prototype.onSubmit = function () {
+postPil.prototype.onSubmit = function () {
     this.layer1.style.display = 'none';
     this.layer2.style.display = 'block';
+    this.app.tracker('E', 'landing_page');
+    this.app.linkOpener('http://tundakehamilan.com/')
 }
 
 var leadGenCallback = function (obj) {
@@ -310,4 +326,4 @@ var leadGenCallback = function (obj) {
     app.onSubmit();
 }
 
-var app = new eniOil ();
+var app = new postPil ();
